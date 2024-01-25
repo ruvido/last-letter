@@ -3,7 +3,7 @@ package letter
 import (
     // "github.com/spf13/viper"
     "github.com/spf13/cobra"
-    "github.com/ruvido/letter/pkg"
+    "github.com/ruvido/letter/send"
     "fmt"
 )
 
@@ -17,7 +17,7 @@ var sendCmd = &cobra.Command{
 	// Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			letter.SendingNewsletter(args[0],collectionFlag)
+			send.Newsletter(args[0],collectionFlag)
 		} else {
 			fmt.Println("\nError> Missing markdown file\n")
 		}
