@@ -2,7 +2,7 @@ package send
 
 import(
 	"fmt"
-	// "log"
+	"log"
 	"time"
 	"github.com/ruvido/letter/pkg"
 	"github.com/ruvido/letter/markdown"
@@ -37,13 +37,13 @@ func smtpSend ( subject string, content string, txt string, addrs []string ){
 	sendr:= viper.GetString ("general.sender")
 
 	gm := gomail.NewDialer(addr, port, user, pass)
-    // s, err := gm.Dial()
-    _, err := gm.Dial()
+    s, err := gm.Dial()
+    // _, err := gm.Dial()
     if err != nil {panic(err)}
 
 	m := gomail.NewMessage()
-	m.SetHeader ("From", sendr )
 
+	log.Println(len(addrs))
 	batch := viper.GetInt("sending.batch")
 	waits := viper.GetInt("sending.waits")
 	cc := 0
@@ -57,13 +57,14 @@ func smtpSend ( subject string, content string, txt string, addrs []string ){
 		if cc>0 {time.Sleep(time.Duration(waits) * time.Second)}
 		for _, addr := range slice {
 			cc+=1
+			m.SetHeader ("From", sendr )
 			m.SetHeader ("To",        addr )
 			m.SetHeader ("Subject",   subject )
 			m.SetBody   ("text/html", content )
 			fmt.Printf("SEND> %4d/%-4d   %s\n", cc,len(addrs),addr)
-			// if err := gomail.Send(s, m); err != nil {
-				// log.Printf("Could not send email to %q: %v", addr, err)
-			// }
+			if err := gomail.Send(s, m); err != nil {
+				log.Printf("Could not send email to %q: %v", addr, err)
+			}
 			m.Reset()
 		}
 	}

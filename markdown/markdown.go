@@ -7,8 +7,10 @@ import (
     "time"
     "strings"
     "io/ioutil"
+	"html/template"
     "github.com/yuin/goldmark"
     "github.com/adrg/frontmatter"
+	"github.com/spf13/viper"
 )
 
 type Email struct {
@@ -46,7 +48,42 @@ func BuildEmail ( markdownFilename string ) Email {
 		panic(err)
 	}
 
-	em.Content = buf.String()
+	// em.Content = buf.String()
+	em.Content = EmailTemplating(buf.String())
 
 	return em
+}
+
+func EmailTemplating ( htmlContent string ) string {
+	// Read the template from a file
+	templateHtml := viper.GetString ("general.template")+".html"
+	t, err := template.ParseFiles(templateHtml)
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a data structure to hold your content
+	data := struct {
+		// Title   string
+		// Heading string
+		Content template.HTML
+	}{
+		// Title:   "My Page",
+		// Heading: "Welcome to My Page",
+		Content: template.HTML(htmlContent),
+	}
+
+	// Create a buffer to hold the filled template
+	var tplBuffer bytes.Buffer
+
+	// Write the filled template to the buffer
+	err = t.Execute(&tplBuffer, data)
+	if err != nil {
+		panic(err)
+	}
+
+	// Convert the buffer to a string
+	filledTemplate := tplBuffer.String()
+
+	return filledTemplate
 }

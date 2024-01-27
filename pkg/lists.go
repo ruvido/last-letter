@@ -10,7 +10,7 @@ func GetEmailsFrom( collection string ) []string {
 	if collection != "" {
 		log.Println("get emails from collection -->", collection)
 		emails = PocketbaseEmailsFrom( collection )
-		
+
 	} else {
 		// emails = []string{viper.GetString("test.email")}
 		emails = append(emails, viper.GetString("test.email"))

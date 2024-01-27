@@ -16,19 +16,37 @@ func PocketbaseEmailsFrom( collection string ) []string {
 			viper.GetString("pocketbase.admin"),
 			viper.GetString("pocketbase.password")))
 
-	response, err := client.List(
-		collection, pocketbase.ParamsList{
-        Page: 1, Size: 10000, Sort: "-created", 
-		Filters: viper.GetString("pocketbase.filters"),
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    // log.Printf("Total of Emails: %d\n",response.TotalItems)
+	emails := []string{}
+	keepListing := true
+	askPage := 1
+	for keepListing {
+		response, err := client.List(
+			collection, pocketbase.ParamsList{
+				Page: askPage, Size: 500, Sort: "-created", 
+				Filters: viper.GetString("pocketbase.filters"),
+				// Page: 1, Size: 10000, Sort: "-created", 
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	var emails []string
-	for _, item := range response.Items {
-		emails = append(emails, item["email"].(string))
+		// fmt.Println("page: ",response.Page)
+		// fmt.Println("perpage:",response.PerPage, len(response.Items))
+		// fmt.Println("totalitems:",response.TotalItems)
+		// fmt.Println("totalpages:",response.TotalPages)
+
+		page := response.Page
+		totp := response.TotalPages
+
+		if page < totp {
+			askPage = page+1
+		} else {
+			keepListing = false
+		}
+
+		for _, item := range response.Items {
+			emails = append(emails, item["email"].(string))
+		}
 	}
 
 	return emails
