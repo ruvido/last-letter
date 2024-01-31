@@ -8,6 +8,8 @@ import(
 	"github.com/ruvido/letter/markdown"
 	gomail "gopkg.in/gomail.v2"
 	"github.com/spf13/viper"
+    // "github.com/gosimple/slug"
+
 )
 
 
@@ -66,6 +68,7 @@ func smtpSend ( subject string, content string, txt string, addrs []string ){
 				log.Printf("Could not send email to %q: %v", addr, err)
 			}
 			m.Reset()
+
 		}
 	}
 }

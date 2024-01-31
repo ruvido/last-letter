@@ -17,7 +17,7 @@ import (
 // }
 
 var cfgFile string
-// var config Config
+var collectionName string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -39,6 +39,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	// rootCmd.PersistentFlags().StringVar(&config.FNAME, "config", "", "config file (default is ./letter.toml)")
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./letter.toml)")
+	rootCmd.PersistentFlags().StringVar(&collectionName, "collection", "c", "collection name")
 	// Add other persistent flags here
 
 	// Bind the persistent flags to the config struct fields
