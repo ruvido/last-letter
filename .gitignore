@@ -1,2 +1,3 @@
 letter.toml
 config.toml
+*.db*
