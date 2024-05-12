@@ -1,0 +1,25 @@
+[general]
+name        = "Newsletter x Veri Uomini!"
+sender      = "Realmen <newsletter@realmen.it>"
+template    = 'templates/realmen'
+
+[sending]
+batch       = 2 # email packet size
+waits       = 0 # wait between packets (in seconds)
+
+[pocketbase]
+# address   = "http://127.0.0.1:8090" # local testing
+# address     = "https://pb.realmen.it"
+address     = "https://pb.5p2p.it"
+filter      = "verified = true"
+admin       = "ruvido@gmail.com"
+password    = "solemio777"
+
+[smtp]
+user     	= "PM-B-broadcast-A0iIuI2wvc75VAMmIkhn1"
+password	= "n7BFb_NWH9KOGH4LhU80WjCURAsGGEzAJS7a"
+address		= "smtp-broadcasts.postmarkapp.com"
+port 		= "587"
+
+[test]
+email       = "ruvido@gmail.com"

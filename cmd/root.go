@@ -18,6 +18,7 @@ import (
 
 var cfgFile string
 var collectionName string
+var collectionFilter string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,6 +30,12 @@ var rootCmd = &cobra.Command{
 		fmt.Println("CONFIG>", cfgFile)
 		fmt.Println("CONFIG>", viper.GetString("server.address"))
 		fmt.Println("CONFIG>", viper.GetString("test.email"))
+
+		fmt.Println("COLLECTION>", collectionName)
+		fmt.Println("FILTER>", collectionFilter)
+
+		// fmt.Println("COLLECTION (viper)>", viper.GetString("pocketbase.collection"))
+		// fmt.Println("FILTER (viper)>", viper.GetString("pocketbase.filter"))
 		// fmt.Println("CONFIG>", config.FNAME)
 		// fmt.Println("CONFIG>", config.Server)
 		// fmt.Println("CONFIG>", config.Caz)
@@ -39,13 +46,14 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	// rootCmd.PersistentFlags().StringVar(&config.FNAME, "config", "", "config file (default is ./letter.toml)")
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./letter.toml)")
-	rootCmd.PersistentFlags().StringVar(&collectionName, "collection", "c", "collection name")
+	rootCmd.PersistentFlags().StringVarP(&collectionName, "collection", "c", "",  "collection name")
+	rootCmd.PersistentFlags().StringVarP(&collectionFilter, "filter", "f", "", "collection filter")
+	// sendCmd.Flags().StringVarP(&collectionFlag, "collection", "c", "", "email addresses collection name")
 	// Add other persistent flags here
 
 	// Bind the persistent flags to the config struct fields
-	// viper.BindPFlag("server", rootCmd.PersistentFlags().Lookup("server"))
-	// viper.BindPFlag("caz",    rootCmd.PersistentFlags().Lookup("caz"))
-	// Bind other flags to the config struct fields
+	// viper.BindPFlag("pocketbase.collection", rootCmd.PersistentFlags().Lookup("collection"))
+	viper.BindPFlag("pocketbase.filter", rootCmd.PersistentFlags().Lookup("filter"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -71,6 +79,8 @@ func initConfig() {
 		// 	fmt.Println("ERR>", err)
 		// 	return
 		// }
+		// collectionName   = viper.GetString("pocketbase.collection")
+		collectionFilter = viper.GetString("pocketbase.filter")
 	}
 }
 

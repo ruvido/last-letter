@@ -9,16 +9,18 @@ import(
 	gomail "gopkg.in/gomail.v2"
 	"github.com/spf13/viper"
     // "github.com/gosimple/slug"
+	// "os"
 
 )
 
 
-func Newsletter( markdownFile string, collection string ){
-
+func Newsletter( markdownFile string, collection string, filter string ){
 
 	// Fetch email addresses from database collection
-	emailAddrs := letter.GetEmailsFrom( collection )
+	emailAddrs := letter.GetEmailsFrom( collection, filter )
 
+	// log.Println(emailAddrs)
+	// os.Exit(99)
 
 	// Create email object from markdown file
 	em := markdown.BuildEmail( markdownFile )

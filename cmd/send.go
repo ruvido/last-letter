@@ -5,6 +5,7 @@ import (
     "github.com/spf13/cobra"
     "github.com/ruvido/letter/send"
     "fmt"
+	// "os"
 )
 
 var (
@@ -17,14 +18,16 @@ var sendCmd = &cobra.Command{
 	// Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			send.Newsletter(args[0],collectionFlag)
+			// send.Newsletter(args[0],collectionFlag)
+			send.Newsletter(args[0],collectionName,collectionFilter)
 		} else {
-			fmt.Println("\nError> Missing markdown file\n")
+			fmt.Println("\nletter send <markdown.file> (-c <collection.name> -f <collection.filter>)")
+			fmt.Println("Error> Missing markdown file\n")
 		}
     },
 }
 
 func init() {
-	sendCmd.Flags().StringVarP(&collectionFlag, "collection", "c", "", "email addresses collection name")
+	// sendCmd.Flags().StringVarP(&collectionFlag, "collection", "c", "", "email addresses collection name")
     rootCmd.AddCommand(sendCmd)
 }

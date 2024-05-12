@@ -12,7 +12,7 @@ import (
 //
 // }
 
-func PocketbaseEmailsFrom( collection string ) []string {
+func PocketbaseEmailsFrom( collection string, filter string ) []string {
 
 	client := pocketbase.NewClient(
 		viper.GetString("pocketbase.address"),
@@ -20,6 +20,9 @@ func PocketbaseEmailsFrom( collection string ) []string {
 			viper.GetString("pocketbase.admin"),
 			viper.GetString("pocketbase.password")))
 
+	
+	// log.Println(collection)
+	// os.Exit(5)
 	emails := []string{}
 	keepListing := true
 	askPage := 1
@@ -27,10 +30,12 @@ func PocketbaseEmailsFrom( collection string ) []string {
 		response, err := client.List(
 			collection, pocketbase.ParamsList{
 				Page: askPage, Size: 500, Sort: "-created", 
-				Filters: viper.GetString("pocketbase.filters"),
+				// Filters: viper.GetString("pocketbase.filters"),
+				Filters: filter,
 				// Page: 1, Size: 10000, Sort: "-created", 
 		})
 		if err != nil {
+			log.Println("bum")
 			log.Fatal(err)
 		}
 
