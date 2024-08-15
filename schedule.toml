@@ -1,0 +1,9 @@
+[prima]
+date = "2024/01/10"
+collection = "emails"
+markdown = "caz.md"
+
+[seconda]
+date = "2024/01/10"
+collection = "emails"
+markdown = "stocaz.md"

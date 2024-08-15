@@ -1,0 +1,24 @@
+[general]
+name        = "Newsletter xxxxxxxxxxxxxx"
+sender      = "xxxxxxx <newsletter@xxxxxxxxxx>"
+template    = 'templates/xxxxxxx'
+
+[sending]
+batch       = 100 # email packet size
+wait        = 5 # wait between packets (in seconds)
+
+[pocketbase]
+# address   = "http://127.0.0.1:8090" # local testing
+address     = "https://xxxxxxxxxxxxx"
+filters     = "verified = true"
+admin       = "xxxxxxxxxxxxxxxx"
+password    = "xxxxxxxxxx"
+
+[smtp]
+address     = "smtp-server"
+user        = "smtp-user"
+password    = "smtp-user-secret-password"
+port        = 123
+
+[test]
+email       = "xxxxxxxxxxxxxxxx"
