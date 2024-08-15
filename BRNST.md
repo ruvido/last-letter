@@ -1,3 +1,5 @@
+# error handling
+- panics if template folder is not there
 
 # dev environment to develop letter
 - create a dev branch

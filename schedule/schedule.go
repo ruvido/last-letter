@@ -16,8 +16,8 @@ import(
 )
 	
 func Send() {
-	// log.Println("sbam")
-	// searchScheduledLetters()
+
+	log.Println("Looking for letters...")
 	crontab := viper.GetString("schedule.crontab")
 	c := cron.New()
 	c.AddFunc(crontab, searchScheduledLetters )
@@ -28,7 +28,6 @@ func Send() {
 
 func searchScheduledLetters() {
 
-	log.Println("Looking for letters...")
 	content := viper.GetString("schedule.content")
 	archive := viper.GetString("schedule.archive") 
 
