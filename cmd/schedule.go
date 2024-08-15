@@ -10,7 +10,7 @@ var scheduleCmd = &cobra.Command{
     Use:   "schedule",
     Short: "Schedule campaigns in file",
     Run: func(cmd *cobra.Command, args []string) {
-        log.Println("Scheduling campaigns in file")
+        log.Println("Letter scheduler started")
 		//letter.Schedule(args[0])
 		schedule.Send()
     },

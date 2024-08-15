@@ -18,11 +18,14 @@ type Email struct {
 	Tags  []string     `yaml:"tags"`
     Content  string
     Txt      string
+    Filename string
 }
 
 func BuildEmail ( markdownFilename string ) (Email, error) {
 
 	var em Email
+	
+	em.Filename = markdownFilename
 	
 	// Read whole markdown file
 	wholeFile, err := ioutil.ReadFile(markdownFilename)
