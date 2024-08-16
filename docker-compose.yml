@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  letter:
+    build:
+      context: .
+    volumes:
+      - /apps/letter/log:/var/log
+      - /apps/letter/data:/letter
+    entrypoint: ["/bin/sh", "-c", "letter schedule -c test >> /var/log/letter.log"]
