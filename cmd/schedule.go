@@ -12,6 +12,7 @@ var scheduleCmd = &cobra.Command{
     Run: func(cmd *cobra.Command, args []string) {
         log.Println("Letter scheduler started")
 		//letter.Schedule(args[0])
+		// log.Println(GetFilter())
 		schedule.Send()
     },
 }

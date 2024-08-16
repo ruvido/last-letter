@@ -11,15 +11,18 @@ import(
 	"path/filepath"
 	"github.com/robfig/cron/v3"
 	"github.com/ruvido/letter/markdown"
+	"github.com/ruvido/letter/send"
 	"github.com/spf13/viper"
-	
 )
 	
 func Send() {
 
 	log.Println("Looking for letters...")
-	crontab := viper.GetString("schedule.crontab")
+	searchScheduledLetters()
+
+	// start cron
 	c := cron.New()
+	crontab := viper.GetString("schedule.crontab")
 	c.AddFunc(crontab, searchScheduledLetters )
 	c.Start()
 
@@ -33,14 +36,19 @@ func searchScheduledLetters() {
 
 	emails := listEmails(content)
 	for _, em := range emails {
-		log.Println(em.Date, em.Filename)
+		// log.Println(em.Date, em.Filename)
+		collectionName   := viper.GetString("pocketbase.collection")
+		collectionFilter := viper.GetString("pocketbase.filter")
+		if err := send.Newsletter(em.Filename,collectionName,collectionFilter); err != nil {
+			log.Fatalf("Error newsletter sending: %v", err)
+		}
+
 		if err := archiveEmail(em, archive); err != nil {
 			log.Fatalf("Error archiving email: %v", err)
 		} else {
-			fmt.Printf("Successfully archived file: %s\n", em.Filename)
+			fmt.Printf("Successfully archived file: %s\n", em.Subject)
 		}
 	}
-
 }
 
 func listEmails(folder string) []markdown.Email {

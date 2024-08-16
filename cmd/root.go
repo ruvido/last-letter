@@ -28,11 +28,13 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Letter> what do you want to do?")
 		fmt.Println("CONFIG>", cfgFile)
-		fmt.Println("CONFIG>", viper.GetString("server.address"))
-		fmt.Println("CONFIG>", viper.GetString("test.email"))
-
-		fmt.Println("COLLECTION>", collectionName)
-		fmt.Println("FILTER>", collectionFilter)
+		fmt.Println("CONFIG>", viper.GetString("pocketbase.address"))
+		if collectionName != "" {
+			fmt.Println("COLLECTION>", collectionName)
+			fmt.Println("FILTER>", collectionFilter)	
+		} else {
+			fmt.Println("TEST>", viper.GetString("test.email"))
+		}
 
 		// fmt.Println("COLLECTION (viper)>", viper.GetString("pocketbase.collection"))
 		// fmt.Println("FILTER (viper)>", viper.GetString("pocketbase.filter"))
@@ -54,6 +56,7 @@ func init() {
 	// Bind the persistent flags to the config struct fields
 	// viper.BindPFlag("pocketbase.collection", rootCmd.PersistentFlags().Lookup("collection"))
 	viper.BindPFlag("pocketbase.filter", rootCmd.PersistentFlags().Lookup("filter"))
+	viper.BindPFlag("pocketbase.collection", rootCmd.PersistentFlags().Lookup("collection"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -89,4 +92,12 @@ func Execute() {
         fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
         os.Exit(1)
     }
+}
+
+func GetFilter() string {
+	return collectionFilter
+}
+
+func GetCollection() string {
+	return collectionName
 }

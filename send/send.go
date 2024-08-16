@@ -9,21 +9,20 @@ import(
 	gomail "gopkg.in/gomail.v2"
 	"github.com/spf13/viper"
     // "github.com/gosimple/slug"
-	"os"
+	// "os"
 )
 
 
 func Newsletter( markdownFile string, collection string, filter string ) error {
 
+
 	// Create email object from markdown file
 	em,err := markdown.BuildEmail( markdownFile )
-		if err != nil {
+
+	if err != nil {
+		log.Fatal(err)
 		return err
 	}
-
-	log.Println(em.Subject)
-	log.Println(em.Date)
-	os.Exit(99)
 
 	// Fetch email addresses from database collection
 	emailAddrs := letter.GetEmailsFrom( collection, filter )
