@@ -19,6 +19,10 @@ type Email struct {
     Content  string
     Txt      string
     Filename string
+    Schedule struct {
+        Collection  string `yaml:"collection"`
+        Filter      string `yaml:"filter"`
+    } `yaml:"schedule"`
 }
 
 func BuildEmail ( markdownFilename string ) (Email, error) {
