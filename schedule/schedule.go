@@ -9,7 +9,7 @@ import(
 	"strings"
 	"io/ioutil"
 	"path/filepath"
-	"github.com/robfig/cron/v3"
+	// "github.com/robfig/cron/v3"
 	"github.com/ruvido/letter/markdown"
 	"github.com/ruvido/letter/send"
 	"github.com/spf13/viper"
@@ -21,12 +21,12 @@ func Send() {
 	searchScheduledLetters()
 
 	// start cron
-	c := cron.New()
-	crontab := viper.GetString("schedule.crontab")
-	c.AddFunc(crontab, searchScheduledLetters )
-	c.Start()
-
-	select {} // Keep the program running indefinitely
+// 	c := cron.New()
+// 	crontab := viper.GetString("schedule.crontab")
+// 	c.AddFunc(crontab, searchScheduledLetters )
+// 	c.Start()
+// 
+// 	select {} // Keep the program running indefinitely
 }
 
 func searchScheduledLetters() {
@@ -53,7 +53,8 @@ func searchScheduledLetters() {
 
 func listEmails(folder string) []markdown.Email {
 
-	list := []markdown.Email{} // Initializes an empty slice
+	list        := []markdown.Email{} // Initializes an empty slice
+	futureList  := []markdown.Email{}
 	
 	// Read the directory
 	files, err := ioutil.ReadDir(folder)
@@ -65,7 +66,6 @@ func listEmails(folder string) []markdown.Email {
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".md") {
 			filePath := filepath.Join(folder, file.Name()) // Use "content" directory here
-
 			// Read the file content
 			email, err := markdown.BuildEmail(filePath)
 			if err != nil {
@@ -77,12 +77,34 @@ func listEmails(folder string) []markdown.Email {
 			edate := email.Date.Format("2006-01-02")
 
 			if edate == today {
-				// log.Println(email.Date)
-				// log.Printf("Sending file: %s\n", filePath)
 				list = append(list, email)
 			}
+			if edate > today {
+				futureList = append(futureList, email)
+            }
 		}
 	}
+
+    // Check if the list is empty and print the appropriate message
+    if len(futureList) > 0 {
+        fmt.Println("")
+        fmt.Println("FUTURE SCHEDULES")
+        for _, email := range futureList {
+            fmt.Printf("  * %s - %s\n", 
+            email.Date.Format("2006-01-02"), email.Subject)
+        }
+    }
+    fmt.Println("")
+    fmt.Println("TODAYS SCHEDULES")
+    if len(list) == 0 {
+        fmt.Println("No letters are scheduled for today")
+    } else {
+        for _, email := range list {
+            fmt.Printf("  * %s - %s\n", 
+            email.Date.Format("2006-01-02"), email.Subject)
+        }
+    }
+    fmt.Println("")
 
 	return list
 }
