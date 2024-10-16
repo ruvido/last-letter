@@ -16,6 +16,7 @@ import (
 // 	Caz    string
 // }
 
+var Version = "v0.1.1"
 var cfgFile string
 var collectionName string
 var collectionFilter string
@@ -27,6 +28,7 @@ var rootCmd = &cobra.Command{
 	Long:  "Publish newsletters using a simple server and the command line",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Letter> what do you want to do?")
+		fmt.Println("VERSION>", Version)
 		fmt.Println("CONFIG>", cfgFile)
 		fmt.Println("CONFIG>", viper.GetString("pocketbase.address"))
 		if collectionName != "" {
