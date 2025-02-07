@@ -1,0 +1,10 @@
+#!/bin/sh
+
+EMAIL_COL=3  # Configura la colonna dell'email (1-based)
+
+awk -F, -v col="$EMAIL_COL" '
+    /^#/ { next }      # Salta i commenti
+    !header_seen++ { next }  # Salta la prima riga non commentata
+    $col != "" { emails = emails ? emails ", " $col : $col }  # Concatena le email
+    END { print "\"" emails "\"" }  # Stampa con virgolette
+' "$1"

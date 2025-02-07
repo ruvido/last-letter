@@ -5,7 +5,8 @@ import (
     "github.com/spf13/viper"
 	"log"
 	"fmt"
-	"os"
+    "strings"
+	// "os"
 )
 func GetEmailsFrom( collection, filter string ) []string {
 	var emails []string
@@ -14,10 +15,8 @@ func GetEmailsFrom( collection, filter string ) []string {
 		emails = PocketbaseEmailsFrom( collection, filter )
     } else {
         if globals.AltList != "" {
-            // log.Println( collection )
-            log.Println( globals.AltList )
-			// emails = strings.Split(globals.AltList, ",")
-            os.Exit(99)
+			emails = strings.Split(globals.AltList, ",")
+            // os.Exit(99)
         } else {
             emails = append(emails, viper.GetString("test.email"))
             log.Println("send a test to",emails)
