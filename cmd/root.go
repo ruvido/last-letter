@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/ruvido/letter/globals" // import our globals package
+
 )
 
 // Config represents the application's configuration
@@ -16,10 +18,10 @@ import (
 // 	Caz    string
 // }
 
-var Version = "v0.1.1"
-var cfgFile string
-var collectionName string
-var collectionFilter string
+var Version = "v0.1.2"
+var cfgFile             string
+var collectionName      string
+var collectionFilter    string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -52,6 +54,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./letter.toml)")
 	rootCmd.PersistentFlags().StringVarP(&collectionName, "collection", "c", "",  "collection name")
 	rootCmd.PersistentFlags().StringVarP(&collectionFilter, "filter", "f", "", "collection filter")
+	rootCmd.PersistentFlags().StringVarP(&globals.AltList, "alternative-list", "l", "",  "Comma separated list of emails")
 	// sendCmd.Flags().StringVarP(&collectionFlag, "collection", "c", "", "email addresses collection name")
 	// Add other persistent flags here
 

@@ -1,24 +1,28 @@
 package letter
 
 import (
+	"github.com/ruvido/letter/globals" // import our globals package
     "github.com/spf13/viper"
 	"log"
 	"fmt"
-	// "os"
+	"os"
 )
-func GetEmailsFrom( collection string, filter string ) []string {
+func GetEmailsFrom( collection, filter string ) []string {
 	var emails []string
 	if collection != "" {
 		log.Println("get emails from collection -->", collection)
 		emails = PocketbaseEmailsFrom( collection, filter )
-		// log.Println( collection )
-		// log.Println( filter)
-		// os.Exit(99)
-	} else {
-		// emails = []string{viper.GetString("test.email")}
-		emails = append(emails, viper.GetString("test.email"))
-		log.Println("send a test to",emails)
-	}
+    } else {
+        if globals.AltList != "" {
+            // log.Println( collection )
+            log.Println( globals.AltList )
+			// emails = strings.Split(globals.AltList, ",")
+            os.Exit(99)
+        } else {
+            emails = append(emails, viper.GetString("test.email"))
+            log.Println("send a test to",emails)
+        }
+    }
 	return emails
 }
 
